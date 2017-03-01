@@ -1,0 +1,47 @@
+<!doctype html>
+<html>
+<head>
+    <title>Many Points with  leaflet Canvas</title>
+    <meta charset="utf-8">
+    <style>        
+        #map {
+            height: 800px;
+            width: 100%;
+        }
+    </style>
+
+</head>
+<body>
+    <div id="map"></div>
+    <link rel="stylesheet" href="leaflet.css" />
+    <script src="leaflet-src.js"></script>
+    <script src="batchPoint.js"></script>
+    <script>
+        function randomlatlng() {
+            let Minlng=73,Maxlng=135,MinLat=3,MaxLat=53;
+            let data={type:'point',geo:[]};            
+            for (var i = 100000 - 1; i >= 0; --i) {
+              let geo = {};
+              geo.id=i;
+              geo.atr='这是'+i+'号';
+              let lng = Math.random() * (Maxlng - Minlng) + Minlng;
+              let lat = Math.random() * (MaxLat - MinLat) + MinLat;
+              lng=lng.toFixed(6);
+              lat=lat.toFixed(6);
+              geo.latlng = [Number(lat), Number(lng)];
+              data.geo.push(geo);
+            }    
+            return data
+        }
+        var b = new Date()
+        var data = randomlatlng();    
+        var e = new Date() 
+        console.log('循环数据'+(e-b))
+        var map = L.map('map').setView([30, 103], 5);
+        L.tileLayer('http://{s}.tile.osm.org/{z}/{x}/{y}.png', {
+            attribution: '&copy; <a href="http://osm.org/copyright">OpenStreetMap</a> contributors'
+        }).addTo(map);
+        L.batchPoint(data,{color:'blue',radius:3}).addTo(map);
+    </script>
+</body>
+</html>
